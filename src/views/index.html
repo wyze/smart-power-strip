@@ -1,0 +1,37 @@
+<html>
+  <head>
+    <title>Smart Power Strip</title>
+    <link rel="stylesheet" href="/c3.css" charset="utf-8">
+    <link rel="stylesheet" href="/open-sans.css" charset="utf-8">
+    <link rel="stylesheet" href="/styles.css" charset="utf-8">
+  </head>
+  <body>
+    <div id="chart"></div>
+
+    <div id="reset" class="flat-button">Reset Chart</div>
+
+    <div class="container">
+      <div class="panel">
+        <div class="labels">
+          <label>Outlet 1</label>
+          <label>Outlet 2</label>
+        </div>
+        <div id="outlet1" class="outlet first">
+          <div class="eye l"></div>
+          <div class="eye r"></div>
+          <div class="m"></div>
+        </div>
+        <div id="outlet2" class="outlet second">
+          <div class="eye l"></div>
+          <div class="eye r"></div>
+          <div class="m"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="fetch.js"></script>
+    <script src="d3.js"></script>
+    <script src="c3.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>

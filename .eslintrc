@@ -1,0 +1,7 @@
+{
+  "extends": "airbnb/base",
+  "parser": "babel-eslint",
+  "rules": {
+    "no-multi-spaces": [0, { "exceptions": { "VariableDeclarator": true } }],
+  }
+}

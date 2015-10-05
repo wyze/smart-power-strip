@@ -1,0 +1,187 @@
+body {
+  font-family: 'Open Sans', serif;
+}
+
+.container {
+  position: relative;
+  max-width: 100%;
+  max-height: 350px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.container:before {
+  content: "";
+  display: block;
+  margin-top: 100%;
+}
+
+.panel {
+  position: absolute;
+  background: #ffffff;
+  height: 85%;
+  width: 60%;
+  top: 10%;
+  left: 20%;
+  border-radius: 5%;
+  box-shadow: inset 20px 0px 10px -7px rgba(0, 0, 0, 0.25), inset -20px 0px 10px -7px rgba(0, 0, 0, 0.25), 0 0 0 3px #e6e6e6;
+}
+
+.labels {
+  font-size: 14px;
+}
+
+.labels label {
+  position: absolute;
+  top: 10%;
+  left: 27.5%;
+}
+
+.labels label + label {
+  left: 67%;
+}
+
+.outlet {
+  position: absolute;
+  height: 60%;
+  width: 30%;
+  left: 15%;
+  top: 25%;
+  border-radius: 25%;
+  box-shadow: inset 0px 0px 10px 5px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  z-index: 1;
+}
+
+.second {
+  left: 55%;
+}
+
+.eye {
+  position: absolute;
+  width: 8%;
+  height: 25%;
+  top: 35%;
+  background: #111111;
+}
+
+.eye:before,
+.eye:after {
+  content: '';
+  z-index: -1;
+  position: absolute;
+  background: #111111;
+  border-radius: 50%;
+  width: 100%;
+  height: 40%;
+  left: 0;
+}
+
+.eye:before {
+  top: -20%;
+}
+
+.eye:after {
+  top: 80%;
+}
+
+.l.eye {
+  left: 25%;
+}
+
+.l.eye,
+.l:before,
+.l:after {
+  box-shadow: -5px 0 0 0 #727272;
+}
+
+.r.eye {
+  left: 65%;
+}
+
+.r.eye,
+.r:before,
+.r:after {
+  box-shadow: 5px 0 0 0 #727272;
+}
+
+.m {
+  position: absolute;
+  height: 6%;
+  width: 10%;
+  background: #111111;
+  top: 58%;
+  left: 43%;
+}
+
+.m:before,
+.m:after {
+  content: '';
+  position: absolute;
+  background: #111111;
+  border-radius: 50%;
+  top: 0;
+  height: 100%;
+  width: 55%;
+}
+
+.m:before {
+  left: -12.5%;
+}
+
+.m:after {
+  left: 70%;
+}
+
+.off {
+  background: #ff4136;
+  transition: background .5s ease;
+}
+
+.off:hover {
+  background: #cc0e03;
+  cursor: pointer;
+}
+
+.on {
+  background: #2ecc40;
+  transition: background .5s ease;
+}
+
+.on:hover {
+  background: #00990d;
+  cursor: pointer;
+}
+
+.flat-button {
+  position: relative;
+  width: 250px;
+  height: 60px;
+  background: #e74c3c;
+  margin-top: 40px;
+  overflow: hidden;
+  z-index: 1;
+  cursor: pointer;
+  transition: color .3s;
+  /* Typo */
+  line-height: 60px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.flat-button:after {
+  position: absolute;
+  top: 90%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #c0392b;
+  content: "";
+  z-index: -2;
+  transition: transform .3s;
+}
+
+.flat-button:hover::after {
+  transform: translateY(-80%);
+  transition: transform .3s;
+}
