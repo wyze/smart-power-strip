@@ -11,6 +11,13 @@ export default [
   },
   {
     method: 'get',
+    path: '/promise.js',
+    handler: {
+      file: './node_modules/es6-promise/dist/es6-promise.min.js',
+    },
+  },
+  {
+    method: 'get',
     path: '/fetch.js',
     handler: {
       file: './node_modules/whatwg-fetch/fetch.js',
