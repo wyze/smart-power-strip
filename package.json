@@ -21,7 +21,7 @@
   "homepage": "https://github.com/wyze/smart-power-strip",
   "dependencies": {
     "bluebird": "^2.10.2",
-    "c3": "^0.4.11-rc4",
+    "c3": "github:masayuki0812/c3",
     "d3": "^3.5.6",
     "es6-promise": "^3.0.2",
     "good": "^6.4.0",
