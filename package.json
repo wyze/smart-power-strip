@@ -27,7 +27,7 @@
     "good": "^6.4.0",
     "good-console": "^5.1.0",
     "handlebars": "^4.0.3",
-    "hapi": "^11.0.2",
+    "hapi": "^10.5.0",
     "inert": "^3.2.0",
     "npm-font-open-sans": "0.0.3",
     "vision": "^3.0.0",
