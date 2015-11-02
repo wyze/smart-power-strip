@@ -1,5 +1,6 @@
 import db      from '../db';
 import numbers from '../numbers';
+import request from 'superagent';
 
 export default [
   {
@@ -79,8 +80,8 @@ export default [
     path: '/numbers',
     handler: ( request, reply ) =>
       reply({
-        outlet1: db.outlet1.sum += db.outlet1.status === 'on' ? numbers() : 0,
-        outlet2: db.outlet2.sum += db.outlet2.status === 'on' ? numbers() : 0,
+        outlet1: db.outlet1.status === 'on' ? db.outlet1.sum : 0,
+        outlet2: db.outlet2.status === 'on' ? db.outlet2.sum : 0,
       }),
   },
   {
@@ -105,12 +106,37 @@ export default [
   {
     method: 'put',
     path: '/power/{outlet}',
-    handler: ( request, reply ) => {
-      const outlet = db[request.params.outlet];
+    handler: ( req, reply ) => {
+      const outlet = db[req.params.outlet];
 
       outlet.status = outlet.status === 'on' ? 'off' : 'on';
 
+      const status = [
+        db.outlet1.status === 'on' ? '1' : '0',
+        db.outlet2.status === 'on' ? '1' : '0',
+      ].join('');
+
+      // send power status to xbee
+      request
+        .put(`http://localhost:3001/power/${status}`)
+        .end(( err, res ) => {
+          if ( err ) {
+            console.error('xbee err', err);
+          }
+
+          console.log('xbee', res);
+        });
+
       reply('ok');
+    },
+  },
+  {
+    method: 'put',
+    path: '/number/{outlet}/{number}',
+    handler: ( request, reply ) => {
+      const outlet = db[request.params.outlet];
+
+      outlet.sum = parseInt(request.params.number, 10);
     },
   },
 ];
