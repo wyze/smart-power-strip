@@ -131,6 +131,7 @@
   });
 
   setInterval(plot, 5000);
+  setInterval(outlets, 5000);
 
   plot();
   outlets();
