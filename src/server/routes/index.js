@@ -132,11 +132,25 @@ export default [
   },
   {
     method: 'put',
-    path: '/number/{outlet}/{number}',
-    handler: ( request, reply ) => {
-      const outlet = db[request.params.outlet];
+    path: '/xbee/number/{outlet}/{numbers}',
+    handler: ( req ) => {
+      const outlet = db[req.params.outlet];
+      const [ high, low ] = req.params.number.split(',');
 
-      outlet.sum = parseInt(request.params.number, 10);
+      outlet.sum = parseInt(high, 10);
+
+      // Delay the update
+      setTimeout(() => outlet.sum = parseInt(low, 10), 1000);
+    },
+  },
+  {
+    method: 'put',
+    path: '/xbee/power/{status}',
+    handler: ( req ) => {
+      const status = parseInt(req.params.status, 10);
+
+      db.outlet1.status = status > 1 ? 'on' : 'off';
+      db.outlet2.status = status % 2 ? 'off' : 'on';
     },
   },
 ];

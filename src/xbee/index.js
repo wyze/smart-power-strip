@@ -15,46 +15,46 @@ server.route({
   path: '/power/{state}',
   handler: req => {
     serialPort.write(req.params.state + '\n', ( err, res ) => {
-      console.log('err', err);
-      console.log('res', res);
+      if ( err ) {
+        server.log('error', 'err', err);
+      }
+
+      server.log('info', 'res', res);
     });
   },
 });
 
 serialPort.open(() => {
-  console.log('Serial port open.');
+  server.log('info', 'Serial port open.');
 
   // data recieved
-  serialPort.on('data', function(data) {
-    const number = data[0];
+  serialPort.on('data', ([ data ]) => {
+    const [ status, outlet, high, low ] = data.split('|');
+
+    // Outlet1 == 19
+    // Outlet2 == 17
+
+    if ( ![ 19, 17 ].some(value => value === outlet) ) {
+      return;
+    }
 
     try {
-      request.put('http://localhost:3000/number/outlet1/' + number)
-        .end(( err, res ) => {
+      request.put(`http://localhost:3000/xbee/number/outlet${outlet % 3}/${high},${low}`)
+        .end(err => {
           if ( err ) {
-            console.error('error:', err);
+            server.log('error', 'error:', err);
           }
-
-          console.log('outlet1', res);
         });
-      request.put('http://localhost:3000/number/outlet2/' + number)
-        .end(( err, res ) => {
+      request.put(`http://localhost:3000/xbee/power/${status}`)
+        .end(err => {
           if ( err ) {
-            console.error('error2:', err);
+            server.log('error', 'error:', err);
           }
-
-          console.log('outlet2', res);
         });
     } catch ( ev ) {
-      console.log('request error', ev);
+      server.log('error', 'request error', ev);
     }
   });
 
-  // send data
-  serialPort.write('00\n', function(err, results) {
-    console.log('err ' + err);
-    console.log('results ' + results);
-  });
-
-  server.start(() => console.log('Xbee server running at:', server.info.uri));
+  server.start(() => server.log('info', 'Xbee server running at:', server.info.uri));
 });
