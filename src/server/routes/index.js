@@ -1,5 +1,4 @@
 import db      from '../db';
-import numbers from '../numbers';
 import request from 'superagent';
 
 export default [
@@ -78,7 +77,7 @@ export default [
   {
     method: 'get',
     path: '/numbers',
-    handler: ( request, reply ) =>
+    handler: ( req, reply ) =>
       reply({
         outlet1: db.outlet1.status === 'on' ? db.outlet1.sum : 0,
         outlet2: db.outlet2.status === 'on' ? db.outlet2.sum : 0,
@@ -87,7 +86,7 @@ export default [
   {
     method: 'get',
     path: '/power',
-    handler: ( request, reply ) =>
+    handler: ( req, reply ) =>
       reply({
         outlet1: db.outlet1.status,
         outlet2: db.outlet2.status,
@@ -96,7 +95,7 @@ export default [
   {
     method: 'put',
     path: '/reset',
-    handler: ( request, reply ) => {
+    handler: ( req, reply ) => {
       db.outlet1.sum = 0;
       db.outlet2.sum = 0;
 
