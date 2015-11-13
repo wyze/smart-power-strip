@@ -1,9 +1,10 @@
-import request        from 'superagent';
-import { SerialPort } from 'serialport';
-import { Server }     from 'hapi';
+import request                 from 'superagent';
+import { SerialPort, parsers } from 'serialport';
+import { Server }              from 'hapi';
 
 const serialPort = new SerialPort('/dev/ttyUSB0', {
   baudrate: 9600,
+  parser: parsers.readline('\n'),
 }, false);
 
 const server = new Server();
@@ -16,20 +17,21 @@ server.route({
   handler: req => {
     serialPort.write(req.params.state + '\n', ( err, res ) => {
       if ( err ) {
-        server.log('error', 'err', err);
+        console.log('error', 'err', err);
       }
 
-      server.log('info', 'res', res);
+      console.log('info', 'res', res);
     });
   },
 });
 
 serialPort.open(() => {
-  server.log('info', 'Serial port open.');
+  console.log('info', 'Serial port open.');
 
   // data recieved
-  serialPort.on('data', ([ data ]) => {
-    const [ status, outlet, high, low ] = data.split('|');
+  serialPort.on('data', data => {
+    const [ , ident, high, low ] = data.toString('ascii').split('|');
+    const outlet = parseInt(ident, 10);
 
     // Outlet1 == 19
     // Outlet2 == 17
@@ -42,19 +44,13 @@ serialPort.open(() => {
       request.put(`http://localhost:3000/xbee/number/outlet${outlet % 3}/${high},${low}`)
         .end(err => {
           if ( err ) {
-            server.log('error', 'error:', err);
-          }
-        });
-      request.put(`http://localhost:3000/xbee/power/${status}`)
-        .end(err => {
-          if ( err ) {
-            server.log('error', 'error:', err);
+            console.log('error', 'error:', err);
           }
         });
     } catch ( ev ) {
-      server.log('error', 'request error', ev);
+      console.log('error', 'request error', ev);
     }
   });
 
-  server.start(() => server.log('info', 'Xbee server running at:', server.info.uri));
+  server.start(() => console.log('info', 'Xbee server running at:', server.info.uri));
 });

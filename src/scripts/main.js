@@ -130,8 +130,8 @@
     },
   });
 
-  setInterval(plot, 5000);
-  setInterval(outlets, 5000);
+  setInterval(plot, 2500);
+  setInterval(outlets, 2500);
 
   plot();
   outlets();

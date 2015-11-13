@@ -111,9 +111,9 @@ export default [
       outlet.status = outlet.status === 'on' ? 'off' : 'on';
 
       const status = [
-        db.outlet1.status === 'on' ? '1' : '0',
-        db.outlet2.status === 'on' ? '1' : '0',
-      ].join('');
+        db.outlet1.status,
+        db.outlet2.status,
+      ].reduce(( prev, curr, idx ) => prev + (curr === 'on' ? (idx + 1) : 0), 0);
 
       // send power status to xbee
       request
@@ -134,7 +134,7 @@ export default [
     path: '/xbee/number/{outlet}/{numbers}',
     handler: ( req ) => {
       const outlet = db[req.params.outlet];
-      const [ high, low ] = req.params.number.split(',');
+      const [ high, low ] = req.params.numbers.split(',');
 
       outlet.sum = parseInt(high, 10);
 
@@ -149,7 +149,7 @@ export default [
       const status = parseInt(req.params.status, 10);
 
       db.outlet1.status = status > 1 ? 'on' : 'off';
-      db.outlet2.status = status % 2 ? 'off' : 'on';
+      db.outlet2.status = status % 3 ? 'off' : 'on';
     },
   },
 ];
