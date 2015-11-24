@@ -27,21 +27,6 @@
         ],
         duration: 1000,
         length: 0,
-        done: function() {
-          setTimeout(function() {
-            get().then(function( res2 ) {
-              chart.flow({
-                columns: [
-                  ['x', new Date()],
-                  ['Outlet 1'].concat(res2.outlet1),
-                  ['Outlet 2'].concat(res2.outlet2),
-                ],
-                duration: 1000,
-                length: 1,
-              });
-            });
-          }, 1000);
-        },
       });
     });
   }

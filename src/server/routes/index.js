@@ -1,5 +1,4 @@
 import db      from '../db';
-import request from 'superagent';
 
 export default [
   {
@@ -79,8 +78,8 @@ export default [
     path: '/numbers',
     handler: ( req, reply ) =>
       reply({
-        outlet1: db.outlet1.status === 'on' ? db.outlet1.sum : 0,
-        outlet2: db.outlet2.status === 'on' ? db.outlet2.sum : 0,
+        outlet1: db.outlet1.status === 'on' ? db.outlet1.next() : 0,
+        outlet2: db.outlet2.status === 'on' ? db.outlet2.next() : 0,
       }),
   },
   {
@@ -110,46 +109,7 @@ export default [
 
       outlet.status = outlet.status === 'on' ? 'off' : 'on';
 
-      const status = [
-        db.outlet1.status,
-        db.outlet2.status,
-      ].reduce(( prev, curr, idx ) => prev + (curr === 'on' ? (idx + 1) : 0), 0);
-
-      // send power status to xbee
-      request
-        .put(`http://localhost:3001/power/${status}`)
-        .end(( err, res ) => {
-          if ( err ) {
-            console.error('xbee err', err);
-          }
-
-          console.log('xbee', res);
-        });
-
       reply('ok');
-    },
-  },
-  {
-    method: 'put',
-    path: '/xbee/number/{outlet}/{numbers}',
-    handler: ( req ) => {
-      const outlet = db[req.params.outlet];
-      const [ high, low ] = req.params.numbers.split(',');
-
-      outlet.sum = parseInt(high, 10);
-
-      // Delay the update
-      setTimeout(() => outlet.sum = parseInt(low, 10), 1000);
-    },
-  },
-  {
-    method: 'put',
-    path: '/xbee/power/{status}',
-    handler: ( req ) => {
-      const status = parseInt(req.params.status, 10);
-
-      db.outlet1.status = status > 1 ? 'on' : 'off';
-      db.outlet2.status = status % 3 ? 'off' : 'on';
     },
   },
 ];
