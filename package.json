@@ -22,7 +22,7 @@
   "dependencies": {
     "bluebird": "^2.10.2",
     "c3": "github:masayuki0812/c3",
-    "d3": "^3.5.8",
+    "d3": "^3.5.10",
     "es6-promise": "^3.0.2",
     "good": "^6.4.0",
     "good-console": "^5.2.0",
